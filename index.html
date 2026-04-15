@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafetería Baroja - IES Pío Baroja</title>
+    
+<link rel="icon" type="image/png" href="Gemini_Generated_Image_lf7se7lf7se7lf7s.png?v=2">
+<link rel="apple-touch-icon" href="Gemini_Generated_Image_lf7se7lf7se7lf7s.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --verde-oscuro: #2e7d32;
+            --verde-claro: #8bc34a;
+            --verde-pastel: #f1f8e9;
+            --gris: #9e9e9e;
+            --bg-base: #f8fafc;
+            --card: rgba(255, 255, 255, 0.98);
+            --text: #1e293b;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --size-cuadro: 150px; 
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background-color: var(--bg-base); color: var(--text); overflow-x: hidden; width: 100%; }
+
+        /* --- FONDO MOSAICO --- */
+        #mosaico-fondo {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            display: grid; grid-template-columns: repeat(auto-fill, var(--size-cuadro));
+            grid-template-rows: repeat(auto-fill, var(--size-cuadro));
+            z-index: -1; opacity: 0.1;
+        }
+        .cuadro { width: 100%; height: 100%; }
+        .c-oscuro { background-color: var(--verde-oscuro); }
+        .c-claro { background-color: var(--verde-claro); }
+        .c-gris { background-color: var(--gris); }
+
+        /* --- NAVEGACIÓN --- */
+        nav {
+            background: white; padding: 1rem; display: flex;
+            justify-content: space-between; align-items: center;
+            box-shadow: var(--shadow); position: sticky; top: 0; z-index: 1000;
+        }
+        .logo-link { text-decoration: none; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .logo-img { width: 35px; height: 35px; object-fit: contain; }
+        .logo-text { font-family: 'Syne', sans-serif; font-weight: 800; color: var(--verde-oscuro); font-size: 1rem; }
+        
+        .btn-cart-nav {
+            background: var(--verde-oscuro); color: white; border: none;
+            padding: 8px 14px; border-radius: 20px; cursor: pointer;
+            font-weight: bold; font-size: 0.85rem;
+        }
+
+        /* --- CATEGORÍAS --- */
+        .categorias-nav {
+            display: flex; gap: 8px; padding: 12px; overflow-x: auto;
+            background: rgba(255,255,255,0.8); position: sticky; top: 60px; z-index: 900;
+            scrollbar-width: none;
+        }
+        .categorias-nav::-webkit-scrollbar { display: none; }
+        .cat-btn {
+            padding: 8px 16px; border-radius: 20px; border: none;
+            background: white; color: var(--verde-oscuro); font-weight: bold;
+            cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.05); white-space: nowrap; font-size: 0.8rem;
+        }
+        .cat-btn.active { background: var(--verde-oscuro); color: white; }
+
+        /* --- PRODUCTOS (EFECTO HOVER) --- */
+        .view { padding: 15px; max-width: 1200px; margin: 0 auto; width: 100%; }
+        .view-hidden { display: none; }
+        .grid-productos { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+
+        .product-card { 
+            background: var(--card); padding: 1rem; border-radius: 15px; 
+            box-shadow: var(--shadow); text-align: center; border: 1px solid rgba(0,0,0,0.03);
+            display: flex; flex-direction: column; justify-content: space-between;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .product-card:hover {
+            transform: scale(0.95);
+            background-color: var(--verde-pastel);
+        }
+
+        .product-emoji { font-size: 2.2rem; margin-bottom: 8px; }
+        .product-name { font-size: 0.8rem; font-weight: 700; margin-bottom: 5px; line-height: 1.1; height: 32px; overflow: hidden; }
+        .product-price { color: var(--verde-oscuro); font-weight: 800; font-size: 0.95rem; margin-bottom: 8px; }
+
+        .btn-add { width: 100%; padding: 8px; background: var(--verde-claro); border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; font-size: 0.75rem; }
+
+        /* --- MODALES --- */
+        .modal-full { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; padding: 15px; }
+        .modal-content { background: white; width: 100%; max-width: 400px; padding: 20px; border-radius: 20px; display: flex; flex-direction: column; max-height: 90vh; overflow-y: auto; }
+        .option-card { border: 2px solid #eee; padding: 12px; border-radius: 12px; margin-bottom: 8px; cursor: pointer; font-weight: bold; text-align: center; font-size: 0.95rem; }
+        .ref-code-box { background: #e8f5e9; padding: 15px; border-radius: 10px; border: 2px dashed var(--verde-oscuro); font-size: 2rem; font-family: 'Courier New', monospace; color: var(--verde-oscuro); margin: 10px 0; text-align: center; letter-spacing: 4px; font-weight: 800; }
+        .btn-main { background: var(--verde-oscuro); color: white; width: 100%; padding: 14px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 1rem; }
+
+        @media (min-width: 768px) {
+            .logo-text { font-size: 1.4rem; }
+            .grid-productos { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="mosaico-fondo"></div>
+
+<nav>
+    <div class="logo-link" onclick="window.location.reload()">
+        <img src="kPbL08YN_400x400.jpg" alt="Logo" class="logo-img">
+        <span class="logo-text">CAFETERÍA BAROJA</span>
+    </div>
+    <button class="btn-cart-nav" onclick="abrirCarrito()">🛒 <span id="cart-count">0</span></button>
+</nav>
+
+<div id="nav-cats" class="categorias-nav">
+    <button class="cat-btn active" onclick="filtrar('combina', this)">🍱 Combina</button>
+    <button class="cat-btn" onclick="filtrar('especial', this)">🍲 Especial</button>
+    <button class="cat-btn" onclick="filtrar('desayuno', this)">☕ Desayuno</button>
+    <button class="cat-btn" onclick="filtrar('bocadillos', this)">🥖 Bocadillos</button>
+    <button class="cat-btn" onclick="filtrar('bebidas', this)">☕ Cafés</button>
+</div>
+
+<main id="view-main" class="view">
+    <div class="grid-productos" id="store-grid"></div>
+</main>
+
+<section id="view-detail" class="view view-hidden">
+    <button onclick="cerrarDetalle()" style="padding: 10px 20px; margin-bottom: 15px; cursor: pointer; border-radius: 8px; border: none; background: #e2e8f0; font-weight: bold;">← Volver</button>
+    <div id="detail-content" style="background:white; padding:25px; border-radius:20px; box-shadow:var(--shadow); text-align:center;"></div>
+</section>
+
+<div id="modal-cart" class="modal-full"><div class="modal-content"><h2>Tu Pedido</h2><div id="cart-list" style="margin:15px 0;"></div><div style="font-weight:800; margin-bottom:15px;">Total: <span id="total-price">0.00</span>€</div><button class="btn-main" onclick="irAMetodoPago()">Continuar</button><button onclick="cerrarModales()" style="background:none; border:none; margin-top:10px; cursor:pointer; color: #666;">Cerrar</button></div></div>
+<div id="modal-payment" class="modal-full"><div class="modal-content"><h2>Método de Pago</h2><div class="option-card" onclick="irAHorarios('Metálico')">💰 Pago Metálico</div><div class="option-card" onclick="irAHorarios('Bizum')">📱 Pago Bizum</div></div></div>
+<div id="modal-time" class="modal-full"><div class="modal-content"><h2>Recogida</h2><div class="option-card" onclick="seleccionarHora('11:15')">🕒 Recreo (11:15)</div><div class="option-card" onclick="seleccionarHora('14:30')">🕒 Salida (14:30)</div></div></div>
+<div id="modal-confirm" class="modal-full"><div class="modal-content" id="final-ticket"></div></div>
+
+<script>
+    let carrito = [];
+    let metodoPago = "";
+    
+    const menuData = [
+        { id: 1, cat: 'combina', nombre: 'Combina 1: Espinacas / Filete', precio: 7.80, emoji: '🍱', opciones: [] },
+        { id: 2, cat: 'combina', nombre: 'Combina 2: Guisantes / Sajonia', precio: 7.80, emoji: '🍱', opciones: [] },
+        { id: 3, cat: 'combina', nombre: 'Combina 3: Judías / Lomo', precio: 7.80, emoji: '🍱', opciones: [] },
+        { id: 4, cat: 'combina', nombre: 'Combina 4: Mixta / Pollo', precio: 7.80, emoji: '🥗', opciones: [] },
+        { id: 5, cat: 'combina', nombre: 'Combina 5: Huevos / Chuleta', precio: 7.80, emoji: '🍳', opciones: [] },
+        { id: 6, cat: 'combina', nombre: 'Combina 6: Pasta / Tortilla', precio: 7.80, emoji: '🍝', opciones: [] },
+        { id: 7, cat: 'especial', nombre: 'Menú Especial (Mar/Mié)', precio: 9.00, emoji: '🍲', opciones: [{label: 'Acompañante', items: ['Atún', 'Salchicha', 'Chorizo']}] },
+        { id: 8, cat: 'desayuno', nombre: 'Desayuno Baroja', precio: 2.60, emoji: '🥐', opciones: [{label: 'Bebida', items: ['Café', 'Té']}, {label: 'Comida', items: ['Tostada', 'Bizcocho']}] },
+        { id: 9, cat: 'bocadillos', nombre: 'Bocadillo Clásico', precio: 2.40, emoji: '🥖', opciones: [{label: 'Variedad', items: ['Tortilla', 'Bacón con queso']}] },
+        { id: 10, cat: 'bocadillos', nombre: 'Hamburguesa', precio: 4.00, emoji: '🍔', opciones: [{label: 'Tipo', items: ['Pollo', 'Mixta']}] },
+        { id: 11, cat: 'bebidas', nombre: 'Café', precio: 1.40, emoji: '☕', opciones: [{label: 'Tipo', items: ['Solo', 'Con leche']}] },
+        { id: 12, cat: 'bebidas', nombre: 'Bebida Especial', precio: 2.00, emoji: '🍫', opciones: [{label: 'Tipo', items: ['Capuchino', 'Choco Taza', 'Café Bombón']}] }
+    ];
+
+    function generarFondo() {
+        const fondo = document.getElementById('mosaico-fondo');
+        const num = (window.innerWidth / 150) * (window.innerHeight / 150);
+        for (let i = 0; i < num; i++) {
+            const d = document.createElement('div');
+            d.className = 'cuadro ' + ['c-oscuro', 'c-claro', 'c-gris', '', ''][Math.floor(Math.random() * 5)];
+            fondo.appendChild(d);
+        }
+    }
+
+    function generarCodigoSeis() {
+        const caracteres = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        let result = '';
+        for (let i = 0; i < 6; i++) result += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+        return result;
+    }
+
+    function filtrar(c, btn) {
+        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+        if(btn) btn.classList.add('active');
+        document.getElementById('store-grid').innerHTML = menuData.filter(i => i.cat === c).map(p => `
+            <div class="product-card" onclick="verDetalle(${p.id})">
+                <div class="product-emoji">${p.emoji}</div>
+                <div class="product-name">${p.nombre}</div>
+                <div class="product-price">${p.precio.toFixed(2)}€</div>
+                <button class="btn-add" onclick="event.stopPropagation(); verDetalle(${p.id})">Añadir +</button>
+            </div>`).join('');
+    }
+
+    function verDetalle(id) {
+        const p = menuData.find(x => x.id === id);
+        document.getElementById('view-main').classList.add('view-hidden');
+        document.getElementById('nav-cats').style.display = 'none';
+        document.getElementById('view-detail').classList.remove('view-hidden');
+        let selectors = p.opciones.map((opt, idx) => `<div style="text-align:left; margin-bottom:12px;"><label style="font-size:0.8rem; font-weight:bold;">${opt.label}:</label><select id="opt-${idx}" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ddd;">${opt.items.map(item => `<option value="${item}">${item}</option>`).join('')}</select></div>`).join('');
+        document.getElementById('detail-content').innerHTML = `<div style="font-size:4rem;">${p.emoji}</div><h2 style="color:var(--verde-oscuro); margin:10px 0;">${p.nombre}</h2>${selectors}<div style="font-size:1.5rem; font-weight:800; margin-bottom:15px;">${p.precio.toFixed(2)}€</div><button class="btn-main" onclick="agregarConOpciones(${p.id})">Añadir al Pedido</button>`;
+    }
+
+    function agregarConOpciones(id) {
+        const p = menuData.find(x => x.id === id);
+        let elecciones = [];
+        p.opciones.forEach((opt, idx) => elecciones.push(document.getElementById(`opt-${idx}`).value));
+        carrito.push({nombre: elecciones.length > 0 ? `${p.nombre} (${elecciones.join(' + ')})` : p.nombre, precio: p.precio});
+        actualizarUI(); cerrarDetalle();
+    }
+
+    function cerrarDetalle() { document.getElementById('view-detail').classList.add('view-hidden'); document.getElementById('view-main').classList.remove('view-hidden'); document.getElementById('nav-cats').style.display = 'flex'; }
+    function actualizarUI() { document.getElementById('cart-count').innerText = carrito.length; document.getElementById('total-price').innerText = carrito.reduce((a, b) => a + b.precio, 0).toFixed(2); document.getElementById('cart-list').innerHTML = carrito.map(i => `<div style="display:flex; justify-content:space-between; font-size:0.85rem; margin-bottom:5px;"><span>${i.nombre.substring(0,25)}...</span><b>${i.precio.toFixed(2)}€</b></div>`).join(''); }
+    function abrirCarrito() { document.getElementById('modal-cart').style.display = 'flex'; }
+    function irAMetodoPago() { if(carrito.length === 0) return alert("Carrito vacío"); cerrarModales(); document.getElementById('modal-payment').style.display = 'flex'; }
+    function irAHorarios(metodo) { metodoPago = metodo; cerrarModales(); document.getElementById('modal-time').style.display = 'flex'; }
+    
+    function seleccionarHora(hora) {
+        cerrarModales();
+        const code = generarCodigoSeis();
+        document.getElementById('final-ticket').innerHTML = `
+            <h2 style="color:var(--verde-oscuro)">¡Pedido Confirmado!</h2>
+            <div style="text-align:left; margin:15px 0; background:#f8fafc; padding:15px; border-radius:10px; font-size:0.9rem;">
+                <p><b>Recogida:</b> ${hora}</p>
+                <p><b>Pago:</b> ${metodoPago}</p>
+            </div>
+            <p>${metodoPago === 'Bizum' ? 'Envía el Bizum al <b>635765983</b>' : 'Presenta este código al pagar:'}</p>
+            <div class="ref-code-box">${code}</div>
+            <p style="font-size:0.75rem; color:grey; margin-top:10px;">¡Recoge la mesa al terminar! Muchas gracias por colaborar.</p>
+            <button class="btn-main" onclick="location.reload()" style="margin-top:10px;">Cerrar</button>`;
+        document.getElementById('modal-confirm').style.display = 'flex';
+    }
+
+    function cerrarModales() { document.querySelectorAll('.modal-full').forEach(m => m.style.display = 'none'); }
+    window.onload = () => { generarFondo(); filtrar('combina', document.querySelector('.cat-btn')); };
+</script>
+</body>
+</html>
