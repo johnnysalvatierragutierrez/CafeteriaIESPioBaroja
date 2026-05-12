@@ -1,43 +1,27 @@
 import { createContext, useContext, useState } from 'react'
-import { loginGoogle, logout, getMe } from '../services/api'
 
 const AuthContext = createContext()
 
+const ADMIN_EMAILS = ['junifegu@gmail.com']
+
 export function AuthProvider({ children }) {
   const [usuario, setUsuario] = useState(null)
-  const [cargando, setCargando] = useState(false)
 
-  const login = async (code) => {
-    setCargando(true)
-    try {
-      const res = await loginGoogle(code)
-      localStorage.setItem('access_token', res.data.access)
-      localStorage.setItem('refresh_token', res.data.refresh)
-      setUsuario(res.data.user)
-      return res.data.user
-    } catch (error) {
-      console.error('Error en login:', error)
-      throw error
-    } finally {
-      setCargando(false)
-    }
+  const loginConGoogle = (emailGoogle) => {
+    const esAdmin = ADMIN_EMAILS.includes(emailGoogle)
+    setUsuario({
+      email: emailGoogle,
+      nombre: emailGoogle.split('@')[0],
+      rol: esAdmin ? 'admin' : 'cliente'
+    })
   }
 
-  const cerrarSesion = async () => {
-    const refresh = localStorage.getItem('refresh_token')
-    try {
-      await logout(refresh)
-    } finally {
-      localStorage.removeItem('access_token')
-      localStorage.removeItem('refresh_token')
-      setUsuario(null)
-    }
-  }
+  const cerrarSesion = () => setUsuario(null)
 
-  const esAdmin = usuario?.rol === 'dueño' || usuario?.rol === 'staff'
+  const esAdmin = usuario?.rol === 'admin'
 
   return (
-    <AuthContext.Provider value={{ usuario, cargando, login, cerrarSesion, esAdmin, setUsuario }}>
+    <AuthContext.Provider value={{ usuario, loginConGoogle, cerrarSesion, esAdmin }}>
       {children}
     </AuthContext.Provider>
   )
