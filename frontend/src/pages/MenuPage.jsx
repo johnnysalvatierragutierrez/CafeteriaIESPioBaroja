@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useCart } from '../context/CartContext'
 import Navbar from '../components/Navbar'
 import CategoriesNav from '../components/CategoriesNav'
 import ProductGrid from '../components/ProductGrid'
@@ -23,20 +24,14 @@ const menuData = [
 ]
 
 export default function MenuPage() {
+  const { carrito, agregarProducto, vaciarCarrito, total } = useCart()
   const [categoria, setCategoria] = useState('combina')
-  const [carrito, setCarrito] = useState([])
-  const [modal, setModal] = useState(null) // 'cart' | 'payment' | 'time' | 'confirm'
+  const [modal, setModal] = useState(null)
   const [metodoPago, setMetodoPago] = useState('')
   const [codigoRecogida, setCodigoRecogida] = useState('')
   const [horaRecogida, setHoraRecogida] = useState('')
 
   const productosFiltrados = menuData.filter(p => p.cat === categoria)
-
-  const agregarAlCarrito = (producto) => {
-    setCarrito([...carrito, producto])
-  }
-
-  const total = carrito.reduce((a, b) => a + b.precio, 0).toFixed(2)
 
   const generarCodigo = () => {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
@@ -53,8 +48,8 @@ export default function MenuPage() {
     <div>
       <Navbar cartCount={carrito.length} onCartClick={() => setModal('cart')} />
       <CategoriesNav categoriaActiva={categoria} onCategoriaChange={setCategoria} />
-      <ProductGrid productos={productosFiltrados} onAgregar={agregarAlCarrito} />
-      
+      <ProductGrid productos={productosFiltrados} onAgregar={agregarProducto} />
+
       {modal === 'cart' && (
         <CartModal carrito={carrito} total={total} onClose={() => setModal(null)} onContinuar={() => setModal('payment')} />
       )}
@@ -65,7 +60,7 @@ export default function MenuPage() {
         <TimeModal onClose={() => setModal(null)} onSeleccionar={confirmarPedido} />
       )}
       {modal === 'confirm' && (
-        <ConfirmModal codigo={codigoRecogida} hora={horaRecogida} metodoPago={metodoPago} onClose={() => { setModal(null); setCarrito([]) }} />
+        <ConfirmModal codigo={codigoRecogida} hora={horaRecogida} metodoPago={metodoPago} onClose={() => { setModal(null); vaciarCarrito() }} />
       )}
     </div>
   )
