@@ -178,7 +178,7 @@ export default function MenuPage() {
     <div style={{ display: 'flex', minHeight: '100vh', fontFamily: "'DM Sans', sans-serif", background: '#f8fafc' }}>
 
       {/* ── Sidebar ── */}
-      <div style={{ width: '240px', minHeight: '100vh', background: 'white', borderRight: '1px solid #f0f0f0', display: 'flex', flexDirection: 'column', padding: '24px 0', position: 'sticky', top: 0, height: '100vh', boxShadow: '2px 0 8px rgba(0,0,0,0.04)' }}>
+      <div className="sidebar-desktop" style={{ width: '240px', minHeight: '100vh', background: 'white', borderRight: '1px solid #f0f0f0', display: 'flex', flexDirection: 'column', padding: '24px 0', position: 'sticky', top: 0, height: '100vh', boxShadow: '2px 0 8px rgba(0,0,0,0.04)' }}>
 
         <div style={{ padding: '0 20px 24px', borderBottom: '1px solid #f0f0f0' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>

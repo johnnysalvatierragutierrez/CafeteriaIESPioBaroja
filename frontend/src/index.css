@@ -71,3 +71,37 @@ body {
     font-size: 1.4rem;
   }
 }
+
+@media (max-width: 768px) {
+  /* Sidebar oculto en móvil */
+  .sidebar-desktop {
+    display: none !important;
+  }
+
+  /* Menú en móvil ocupa todo */
+  .contenido-principal {
+    width: 100% !important;
+  }
+
+  /* Grid de productos en móvil */
+  .grid-productos {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+    padding: 10px !important;
+  }
+
+  /* Login en móvil */
+  .login-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .login-izquierda {
+    display: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-productos {
+    grid-template-columns: 1fr !important;
+  }
+}
