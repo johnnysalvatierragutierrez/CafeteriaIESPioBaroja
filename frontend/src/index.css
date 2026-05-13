@@ -11,11 +11,7 @@
   --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
   font-family: 'DM Sans', sans-serif;
@@ -24,7 +20,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Mobile First - base para móvil */
+/* Mobile First */
 .grid-productos {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -32,9 +28,7 @@ body {
   padding: 10px;
 }
 
-.navbar-title {
-  font-size: 0.9rem;
-}
+.navbar-title { font-size: 0.9rem; }
 
 .modal-content {
   width: 100%;
@@ -53,10 +47,7 @@ body {
     gap: 14px;
     padding: 14px;
   }
-
-  .navbar-title {
-    font-size: 1.1rem;
-  }
+  .navbar-title { font-size: 1.1rem; }
 }
 
 /* Desktop */
@@ -66,42 +57,23 @@ body {
     gap: 20px;
     padding: 20px;
   }
-
-  .navbar-title {
-    font-size: 1.4rem;
-  }
+  .navbar-title { font-size: 1.4rem; }
 }
 
+/* Móvil */
 @media (max-width: 768px) {
-  /* Sidebar oculto en móvil */
-  .sidebar-desktop {
-    display: none !important;
-  }
-
-  /* Menú en móvil ocupa todo */
-  .contenido-principal {
-    width: 100% !important;
-  }
-
-  /* Grid de productos en móvil */
-  .grid-productos {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 10px !important;
-    padding: 10px !important;
-  }
-
-  /* Login en móvil */
-  .login-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .login-izquierda {
-    display: none !important;
-  }
+  .sidebar-desktop { display: none !important; }
+  .contenido-principal { width: 100% !important; padding-bottom: 70px !important; }
+  .grid-productos { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; padding: 10px !important; }
+  .login-grid { grid-template-columns: 1fr !important; }
+  .login-izquierda { display: none !important; }
+  .stats-grid { grid-template-columns: 1fr !important; }
+  .bottom-nav { display: flex !important; }
+  .header-movil { padding: 10px 16px !important; }
+  .header-movil input { font-size: 0.8rem !important; }
+  .header-movil button { padding: 8px 12px !important; font-size: 0.8rem !important; }
 }
 
 @media (max-width: 480px) {
-  .grid-productos {
-    grid-template-columns: 1fr !important;
-  }
+  .grid-productos { grid-template-columns: 1fr !important; }
 }

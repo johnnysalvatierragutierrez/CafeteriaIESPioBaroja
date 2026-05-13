@@ -38,7 +38,7 @@ export default function AdminPage() {
     <div style={{ display: 'flex', minHeight: '100vh', fontFamily: "'DM Sans', sans-serif", background: '#f8fafc' }}>
 
       {/* SIDEBAR */}
-      <div style={{ width: '240px', minHeight: '100vh', background: 'white', borderRight: '1px solid #f0f0f0', display: 'flex', flexDirection: 'column', padding: '24px 0', position: 'sticky', top: 0, height: '100vh' }}>
+      <div className="sidebar-desktop" style={{ width: '240px', minHeight: '100vh', background: 'white', borderRight: '1px solid #f0f0f0', display: 'flex', flexDirection: 'column', padding: '24px 0', position: 'sticky', top: 0, height: '100vh' }}>
         <div style={{ padding: '0 20px 24px', borderBottom: '1px solid #f0f0f0' }}>
           <div style={{ fontWeight: 800, fontSize: '1rem', color: '#1e293b' }}>👨‍🍳 Panel Cafetería</div>
           <div style={{ fontSize: '0.75rem', color: '#9e9e9e', marginTop: '4px' }}>Vista administrador</div>
@@ -75,7 +75,7 @@ export default function AdminPage() {
       <div style={{ flex: 1, padding: '28px' }}>
 
         {/* STATS */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '28px' }}>
+        <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '28px' }}>
           {[
             { label: 'Pendientes', value: pedidosPendientes.length, color: '#fff3cd', icon: '⏳' },
             { label: 'Completados', value: pedidosCompletados.length, color: '#d4edda', icon: '✅' },

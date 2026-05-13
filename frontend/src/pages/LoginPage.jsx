@@ -27,10 +27,10 @@ export default function LoginPage() {
   })
 
   return (
-    <div style={{ minHeight: '100vh', display: 'grid', gridTemplateColumns: '1fr 1fr', fontFamily: "'DM Sans', sans-serif" }}>
+    <div className="login-grid" style={{ minHeight: '100vh', display: 'grid', gridTemplateColumns: '1fr 1fr', fontFamily: "'DM Sans', sans-serif" }}>
 
       {/* LADO IZQUIERDO */}
-      <div style={{
+      <div className="login-izquierda" style={{
         background: 'linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #388e3c 100%)',
         display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
         padding: '48px', position: 'relative', overflow: 'hidden',

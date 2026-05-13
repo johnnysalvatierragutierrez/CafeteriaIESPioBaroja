@@ -7,6 +7,8 @@ import PaymentModal from '../components/PaymentModal'
 import TimeModal from '../components/TimeModal'
 import ConfirmModal from '../components/ConfirmModal'
 import logoImg from '../assets/kPbL08YN_400x400.jpg'
+import BottomNav from '../components/BottomNav'
+
 
 const todosLosProductos = [
   { id: 1,  cat: 'combina',    nombre: 'Combina 1: Espinacas / Filete',   precio: 7.80, emoji: '🍱' },
@@ -240,7 +242,7 @@ export default function MenuPage() {
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
 
         {/* Topbar */}
-        <div style={{ background: 'white', padding: '16px 28px', borderBottom: '1px solid #f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 100 }}>
+        <div className="header-movil" style={{ background: 'white', padding: '16px 28px', borderBottom: '1px solid #f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 100 }}>
           <div style={{ position: 'relative', flex: 1, maxWidth: '400px' }}>
             <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: '#9e9e9e' }}>🔍</span>
             <input
@@ -368,8 +370,7 @@ export default function MenuPage() {
       {modal === 'payment' && <PaymentModal onClose={() => setModal(null)} onSeleccionar={(m) => { setMetodoPago(m); setModal('time') }} />}
       {modal === 'time'    && <TimeModal    onClose={() => setModal(null)} onSeleccionar={confirmarPedido} />}
       {modal === 'confirm' && <ConfirmModal codigo={codigoRecogida} hora={horaRecogida} metodoPago={metodoPago} onClose={() => { setModal(null); vaciarCarrito() }} />}
-
+      <BottomNav vista={vista} setVista={setVista} esAdmin={esAdmin} />
     </div>
   )
 }
-
